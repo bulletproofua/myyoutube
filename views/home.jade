@@ -11,3 +11,16 @@ block content
 								li Username ---> #{user.login}
 								li full_name ---> #{user.full_name} 
 						a(href='/signout', class='text-center new-account') Sign Out
+		div.col-md-10
+			h1 File Uploads
+			hr
+			input(type='file',style='display: none', name='uploadFiles',id='uploadFiles',multiple)
+			div(style='margin-bottom:15px')
+				button.btn.btn-primary(id='addFilesButton') Add files
+				button.btn.btn-primary(id='uploadAllFilesButton', style='margin-left:5px') Upload All
+			div.progress
+			div#progress.progress-bar(role='progressbar', style='width: 0%')
+			table#files.table
+
+block otherScripts
+	script(src='/js/video.upload.js')

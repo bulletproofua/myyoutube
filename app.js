@@ -7,10 +7,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
 
+
 var dbConfig = require('./db');
-// var mongoose = require('mongoose');
-// Connect to DB
-// mongoose.connect(dbConfig.url);
     dbConfig.connect();
 var app = express();
 var server;
@@ -54,6 +52,10 @@ app.use(flash());
 // Initialize Passport
 var initPassport = require('./passport/init');
 initPassport(passport);
+
+var ffmpeg = require('fluent-ffmpeg');
+var ffmpeg = require("./controllers/screenshot");
+//ffmpeg.videoScreen2();
 
 var routes = require('./routes/index')(passport);
 app.use('/', routes);
