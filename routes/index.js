@@ -3,6 +3,9 @@ var express = require('express'),
 	fs = require("fs"),
 	mysql = require('mysql'),
 	multiparty = require('multiparty');
+	var ffmpeg = require('fluent-ffmpeg');
+	var ffmpeg = require("../controllers/screenshot");
+
 
 var db = require('../models/query');
 
@@ -54,12 +57,12 @@ module.exports = function(passport){
 		res.redirect('/');
 	});
 
-	router.get('/user', isAuthenticated, function(req, res) {
-	    res.render('user');
-	});
+	// router.get('/user', isAuthenticated, function(req, res) {
+	//     res.render('user');
+	// });
 
 	// код загрузки відоса
-	router.post('/', function(req, res, next) {    
+	router.post('/', function(req, res, next) { 
 	    // create a form to begin parsing
 	    var form = new multiparty.Form();
 	    var uploadFile = {uploadPath: '', type: '', size: 0};
@@ -113,7 +116,8 @@ module.exports = function(passport){
 
 	        console.log("sent name " + filename);
 	        console.log("sent uploadFile.path " + uploadFile.path);
-	        var post = { user_id: '11', name: filename,  path: uploadFile.path, screenshot_path: uploadFile.path };
+			
+	        var post = { user_id: req.user.id, name: filename,  path: uploadFile.path, screenshot_path: uploadFile.path };
 	        db.PostDataVideos(post);
 	 
 	    });      
@@ -124,6 +128,11 @@ module.exports = function(passport){
 }
 
 
+var videoLink = "./files/Ахахаха [720].mp4";
+var filename = "Ахахаха[720].mp4"; // з БД
+
+
+//ffmpeg.videoScreen( filename, videoLink);
 
 
 

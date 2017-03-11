@@ -31,3 +31,15 @@ exports.PostDataVideos = function(post){
     });
     connection.end();
 }
+
+
+exports.GetVideoByUser = function(user_id){
+    connection.query('SELECT * FROM videos WHERE user_id =?', user_id, function(err, rows, fields) {
+    if (!err){
+        console.log('Selected videos: ', rows);
+        } 
+    else
+        console.log('!Select.');
+    });
+    connection.end();
+}

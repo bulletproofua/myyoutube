@@ -24,10 +24,9 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Configuring Passport
+
 var passport = require('passport');
 var expressSession = require('express-session');
-
 
 var expiryDate = new Date( Date.now() + 60 * 60 * 1000 ); // 1 час
 
@@ -50,7 +49,7 @@ var flash = require('connect-flash');
 app.use(flash());
 
 // Initialize Passport
-var initPassport = require('./passport/init');
+var initPassport = require('./controllers/passport/init');
 initPassport(passport);
 
 var ffmpeg = require('fluent-ffmpeg');
@@ -78,6 +77,10 @@ if (app.get('env') === 'development') {
         });
     });
 }
+
+
+
+
 
     server = app.listen(3000, function(){
     console.log('listening port');

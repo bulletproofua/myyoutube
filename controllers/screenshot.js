@@ -12,7 +12,7 @@ var videoName = "Ахахаха[720].mp4"; // з БД
 
 var videoNameForScreen = videoName + '.png';
 
-exports.videoScreen2 = function(){
+exports.videoScreen = function(){
 	console.log("Start: ");
 	var proc = new ffmpeg(videoLink)
 	.takeScreenshots({

@@ -12,6 +12,11 @@ block content
 								li full_name ---> #{user.full_name} 
 						a(href='/signout', class='text-center new-account') Sign Out
 		div.col-md-10
+			video(width='400', controls='')
+				source(src='./files/Intel Extreme Masters World Championship 2012 Final Day', type='video/mp4')
+				|   Your browser does not support HTML5 video.
+
+		div.col-md-10
 			h1 File Uploads
 			hr
 			input(type='file',style='display: none', name='uploadFiles',id='uploadFiles',multiple)
