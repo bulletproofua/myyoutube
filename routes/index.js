@@ -5,9 +5,8 @@ var express = require('express'),
 	multiparty = require('multiparty');
 	var ffmpeg = require('fluent-ffmpeg');
 	var ffmpeg = require("../controllers/screenshot");
+	var db = require('../models/query');
 
-
-var db = require('../models/query');
 
 var isAuthenticated = function (req, res, next) {
 	// if user is authenticated in the session, call the next() to call the next request handler 
@@ -24,9 +23,9 @@ module.exports = function(passport){
 	/* GET login page. */
 	router.get('/', function(req, res) {
     	// Display the Login page with any flash message, if any
-		res.render('login', { message: req.flash('message') });
+		res.render('login', { message: req.flash('message')});
 	});
-
+//db.GetVideoByUser("1")
 	/* Handle Login POST */
 	router.post('/login', passport.authenticate('login', {
 		successRedirect: '/home',
@@ -34,32 +33,29 @@ module.exports = function(passport){
 		failureFlash : true  
 	}));
 
-	/* GET Registration Page */
 	router.get('/signup', function(req, res){
 		res.render('register',{message: req.flash('signupMessage')});
 	});
 
-	/* Handle Registration POST */
 	router.post('/signup', passport.authenticate('signup', {		
 		successRedirect: '/home',
 		failureRedirect: '/signup',
 		failureFlash : true  
 	}));
 
-	/* GET Home Page */
 	router.get('/home', isAuthenticated, function(req, res){
-		res.render('home', { user: req.user });
+		db.GetVideoByUser( req.user.id , function(err, data){
+			if(err) console.log("ERROR : "+ err);
+			else  {console.log("result : "+ data);
+			res.render('home', { user: req.user ,  data });
+			}
+		});	
 	});
 
-	/* Handle Logout */
 	router.get('/signout', function(req, res) {
 		req.logout();
 		res.redirect('/');
 	});
-
-	// router.get('/user', isAuthenticated, function(req, res) {
-	//     res.render('user');
-	// });
 
 	// код загрузки відоса
 	router.post('/', function(req, res, next) { 
@@ -90,12 +86,15 @@ module.exports = function(passport){
 	    });
 	    var path ="";
 	    var filename ="";
+		
 	    // listen on part event for image file
 	    form.on('part', function(part) {
 	        uploadFile.size = part.byteCount;
 	        uploadFile.type = part.headers['content-type'];
-	        uploadFile.path = './files/' + part.filename;
-	        path = uploadFile.path;
+	        uploadFile.path = 'public/files/' + part.filename;
+			uploadFile.pathSQL = './files/' + part.filename;
+			screenshot_pathSQL = './files/Screenshot/' + part.filename + ".png";
+	        //path = uploadFile.path;
 	        filename = part.filename;
 
 	        if(uploadFile.size > maxSize) {
@@ -114,25 +113,43 @@ module.exports = function(passport){
 	            part.resume();
 	        }
 
-	        console.log("sent name " + filename);
-	        console.log("sent uploadFile.path " + uploadFile.path);
+	        var post = { user_id: req.user.id, name: filename,  path: uploadFile.pathSQL, screenshot_path: screenshot_pathSQL };
+			db.PostDataVideos(post);
+
+			ffmpeg.videoScreen( filename, uploadFile.path);
 			
-	        var post = { user_id: req.user.id, name: filename,  path: uploadFile.path, screenshot_path: uploadFile.path };
-	        db.PostDataVideos(post);
-	 
-	    });      
+	    });
 	    form.parse(req);
+	});
+
+	router.get('/video', function(req, res) {
+		req.query.id; 
+		console.log("req.query.id :" + req.query.id);
+		db.GetVideoById( req.query.id , function(err,data){
+			if(err) console.log("ERROR : "+ err);
+			else  {
+				console.log("result : "+ data[0].name + " "+ data[0].path);
+				res.render('videoPlayer', { data });
+			}
+		});
+	});
+
+	router.get('/index', function(req, res) {
+		db.GetVideo(function(err, data) {
+			if(err) console.log("ERROR : "+ err);
+			else  {console.log("result : "+ data);
+			res.render('index', { data });
+			}
+		});	
+		//res.render('index');
 	});
 
 	return router;
 }
 
-
-var videoLink = "./files/Ахахаха [720].mp4";
-var filename = "Ахахаха[720].mp4"; // з БД
-
-
-//ffmpeg.videoScreen( filename, videoLink);
+//  var uploadFilepathSQL = "public/files/----Gorilla Riders---- Спартак Алемасов и его Nissan Silvia.mp4";
+//  var filename = "----Gorilla Riders---- Спартак Алемасов и его Nissan Silvia.mp4"; // з БД
+//ffmpeg.videoScreen( filename, uploadFilepathSQL);
 
 
 

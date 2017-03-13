@@ -9,8 +9,6 @@ module.exports = function(passport){
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
         function(req, login, pass, done) {
-            console.log("zaishlo");
-
             findOrCreateUser = function(){
                 // find a user in Mongo with provided username
             connection.query("select * from users where login = '"+login+"'",function(err,rows){

@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    div.container
+        div.row
+            div.col-md-12
+                each thing in data
+                    div.col-md-3.videoHome 
+                        //- p.videoLink(onclick = "linkToVideo(#{thing.id})") #{thing.name}   
+                        a(href="/video?id=#{thing.id}") #{thing.name}                     						
+                            img.videoLink(src="#{thing.screenshot_path}", alt="screenshot")
+                        p #{thing.added_date}
+                        p some stars
+                        //- span.clearfix

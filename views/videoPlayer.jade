@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    div.container
+        div.row
+            div.videoPlayer
+                p #{data[0].name}
+                video(controls="")
+                    source(src='#{data[0].path}', type='video/mp4')
+                    |   Your browser does not support HTML5 video.
+            div.col-md-10
+                div.commentBlock
+                    p Name
+                    p lalaala
+                    p lalala
