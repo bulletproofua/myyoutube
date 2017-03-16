@@ -3,8 +3,8 @@ extends layout
 block content
     div.container
         div.row
-            div.videoPlayer
-                p #{data[0].name}
+            div.videoPlayer.col-md-10.col-md-offset-1
+                p#title-name #{data[0].name}
                 -console.log("data : " + data[0].AVG);
                 video(controls="")
                     source(src='#{data[0].path}', type='video/mp4')
@@ -17,7 +17,7 @@ block content
                         $("#"+"#{data[0].id}").barrating('set', "#{data[0].AVG}");
                     });
                 p Додано : #{data[0].added_date}
-                p Загрузив : #{data[0].full_name}
+                p.userName Загрузив : #{data[0].full_name}
                 .br-wrapper.br-theme-css-stars                   
                     select.RatingBar(id="#{data[0].id}")
                         option(value='')
@@ -27,12 +27,31 @@ block content
                         option(value='4') 4
                         option(value='5') 5
                     //- div.br-widget
-                p Рейтинг : "#{data[0].AVG}"
-            div.col-md-10
+                p Рейтинг : #{data[0].AVG}
+            div.col-md-8.col-md-offset-2
                 div.commentBlock
-                    p Name
-                    p lalaala
-                    p lalala
+                    ul 
+                        li #{data[0].full_name}
+                        li Оцінка : #{data[0].rating}
+                        li Текст: #{data[0].comment}
+            div.col-md-8.col-md-offset-2
+                div.addComment
+                    form
+                        .br-wrapper.br-theme-css-stars                   
+                            select.RatingBar(id="#{data[0].id}")
+                                option(value='')
+                                option(value='1') 1
+                                option(value='2') 2
+                                option(value='3') 3  
+                                option(value='4') 4
+                                option(value='5') 5
+                        textarea(class="form-control", placeholder ="Відгук")
+                        button(class='btn btn-primary btn-block', type='submit') Відправити
+
+
+
+
+
 
 
 block otherScripts

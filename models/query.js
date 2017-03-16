@@ -35,9 +35,11 @@ exports.PostDataVideos = function(post, filename, uploadFile){
 //  connection.end();
 }
 
+// зали базу норм заповню
+// SELECT * , AVG(raitings.rating) as 'AVGRATING' FROM videos JOIN raitings ON videos.id = raitings.video_id WHERE videos.user_id =1 LIMIT 8
 
 exports.GetVideoByUser = function(user_id, callback){
-    connection.query('SELECT * FROM videos WHERE user_id =?', user_id, function(err, rows, fields) {
+    connection.query('SELECT * FROM videos JOIN raitings ON videos.id = raitings.video_id WHERE videos.user_id =? LIMIT 8', user_id, function(err, rows, fields) {
     if (err){
             callback(err,null);
         } else {
@@ -46,19 +48,13 @@ exports.GetVideoByUser = function(user_id, callback){
     });
 };
 
-
-// Сортіровка по даті від давнішого до нового
-// SELECT videos.*, users.full_name 
-// FROM videos 
-// INNER JOIN users ON videos.user_id = users.id ORDER BY added_date LIMIT 16
-
-// Сортіровка по даті від нового до старого
-// SELECT videos.*, users.full_name 
-// FROM videos 
-// INNER JOIN users ON videos.user_id = users.id ORDER BY added_date DESC limit 16
+// по даті додавання
+// SELECT Videos.*, COUNT(raitings.id) as commentsCount, AVG(raitings.rating) as 'AVGRATING' 
+// FROM VIDEOS 
+// JOIN (USERS, raitings) ON (videos.user_id = users.id AND videos.id = raitings.video_id) GROUP BY videos.id ORDER BY videos.added_date DESC LIMIT 8 OFFSET 0
 
 exports.GetVideo = function(callback){
-    connection.query('SELECT videos.*, users.full_name FROM videos INNER JOIN users ON videos.user_id = users.id LIMIT 16', function(err, rows, fields) {
+    connection.query('SELECT Videos.*, COUNT(raitings.id) as commentsCount, AVG(raitings.rating) as "AVGRATING" FROM VIDEOS JOIN (USERS, raitings) ON (videos.user_id = users.id AND videos.id = raitings.video_id) GROUP BY videos.id ORDER BY AVGRATING DESC LIMIT 8 OFFSET 0', function(err, rows, fields) {
     if (err){
             callback(err,null);
         } else {
@@ -73,7 +69,7 @@ exports.GetVideo = function(callback){
 // INNER JOIN raitings ON videos.id = raitings.video_id 
 // WHERE videos.id=? ;
 exports.GetVideoById = function( id, callback ){
-    connection.query('SELECT videos.*, users.full_name, raitings.video_id, AVG(raitings.rating) as "AVG" FROM videos INNER JOIN users ON videos.user_id = users.id INNER JOIN raitings ON videos.id = raitings.video_id WHERE videos.id=?', id , function(err, rows, fields) {
+    connection.query('SELECT videos.*, users.full_name, raitings.*, AVG(raitings.rating) as "AVG" FROM videos INNER JOIN users ON videos.user_id = users.id INNER JOIN raitings ON videos.id = raitings.video_id WHERE videos.id=?', id , function(err, rows, fields) {
     if (err){
             callback(err,null);
         } else {

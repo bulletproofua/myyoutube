@@ -3,12 +3,12 @@ body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
-
 a {
-  color: #00B7FF;
+    color: black;
 }
-
-
+a p{
+    color: black;
+}
 .form-signin{
     max-width: 330px;
     padding: 15px;
@@ -106,30 +106,96 @@ ul.user-details{
     float: left;
     height: 300px;
     width: auto;
-    margin: 10px 0 ;
-    border: 1px solid black;
+    margin: 5px 5px;
+    border: 1px solid #ccc;
 }
+
 .videoHome p {
     font-size: 12px;
+    padding: 5px 0;
+    margin: 0px;
+}
+/*.videoHome a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+}*/
+.videoHome a p{
+    margin:0px;
+    padding: 0px;
+}
+.size {
+    white-space: nowrap; /* Отменяем перенос текста */
+    overflow: hidden; /* Обрезаем содержимое */
+    padding: 2px; /* Поля */
+    text-overflow: ellipsis; /* Многоточие */
 }
 
 .videoHome img {
-    /*margin: 0 auto;*/
-    height: 140px;
+    text-align:center;
+    height: 170px;
     width: auto;
-
 }
 
 
 
 /*----------VIDEO_PLAYER-----------*/
+    a:link { text-decoration: none; }
+    a:visited { text-decoration: none; }
+    a:active { text-decoration: none; }
+    a:hover { text-decoration: none; } 
+
+    a p:link { text-decoration: none; }
+    a p:visited { text-decoration: none; }
+    a p:active { text-decoration: none; }
+    a p:hover { text-decoration: none; } 
+
+
+#title-name {
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.videoPlayer {
+    margin-bottom: 30px;
+    margin: 20px 0 0 0 ;
+}
+
 .videoPlayer video {
-    margin: 0px auto;
+    padding: 0;
+   
+    /*margin: 0px auto;*/
     width: 900px;
-    height: 540px;
+    height: auto;
+    /*height: 540px;*/
 }
 
 .commentBlock {
+    border: 1px solid #cccccc;
+    border-radius: 10px;
     margin: 0 auto;
-    border: 2px solid gray;
+    border-style: 3px solid;
+    box-shadow: inset 0 3px 6px rgba(0,0,0,.05);
+    margin-bottom: 10px;
+}
+
+.commentBlock  ul {
+    margin-left: 0; 
+    padding-left: 0; 
+   }
+.commentBlock li:first-child {
+    color: #fff;
+    background-color: #3071a9;
+    border-color: #285e8e;
+
+    font-size: 1.3em;
+    border-radius:10px;
+}
+.commentBlock li {
+    padding-left: 3%;
+    list-style-type: none;
+}
+.addComment{
+    margin-top: 10px;
 }

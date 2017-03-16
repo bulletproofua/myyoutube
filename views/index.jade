@@ -11,11 +11,12 @@ block content
                                 $(".RatingBar").barrating({
                                 theme: 'css-stars'     
                                 });
-                                $("#"+"#{thing.id}").barrating('set', "#{thing.AVG}");
+                                $("#"+"#{thing.id}").barrating('set', "#{thing.AVGRATING}");
                             });
-                        a(href="/video?id=#{thing.id}") #{thing.name}                     						
+                        a(href="/video?id=#{thing.id}") 
+                            p.size #{thing.name}                     						
                             img.videoLink(src="#{thing.screenshot_path}", alt="screenshot")
-                        p #{thing.added_date}
+                        p.size #{thing.added_date}
                         p #{thing.full_name}
                         .br-wrapper.br-theme-css-stars                      
                             select.RatingBar(id="#{thing.id}")
@@ -24,7 +25,7 @@ block content
                                 option(value='3') 3  
                                 option(value='4') 4
                                 option(value='5') 5
-                        p Рейтинг : #{thing.AVG}
+                        p Рейтинг : #{thing.AVGRATING}
                         
                         
 
