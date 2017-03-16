@@ -5,10 +5,29 @@ block content
         div.row
             div.col-md-12
                 each thing in data
-                    div.col-md-3.videoHome 
-                        //- p.videoLink(onclick = "linkToVideo(#{thing.id})") #{thing.name}   
+                    div.col-md-3.videoHome
+                        script(type='text/javascript').
+                            $(function() {
+                                $(".RatingBar").barrating({
+                                theme: 'css-stars'     
+                                });
+                                $("#"+"#{thing.id}").barrating('set', "#{thing.AVG}");
+                            });
                         a(href="/video?id=#{thing.id}") #{thing.name}                     						
                             img.videoLink(src="#{thing.screenshot_path}", alt="screenshot")
                         p #{thing.added_date}
-                        p some stars
-                        //- span.clearfix
+                        p #{thing.full_name}
+                        .br-wrapper.br-theme-css-stars                      
+                            select.RatingBar(id="#{thing.id}")
+                                option(value='1') 1
+                                option(value='2') 2
+                                option(value='3') 3  
+                                option(value='4') 4
+                                option(value='5') 5
+                        p Рейтинг : #{thing.AVG}
+                        
+                        
+
+block otherScripts
+    script(src='/libs/jquery-bar-rating/dist/jquery.barrating.min.js')
+    //- script(src='/libs/jquery-bar-rating/dist/startRatingConfig.js') 

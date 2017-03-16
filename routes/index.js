@@ -6,8 +6,7 @@ var express = require('express'),
 	var ffmpeg = require('fluent-ffmpeg');
 	var ffmpeg = require("../controllers/screenshot");
 	var db = require('../models/query');
-
-
+	
 var isAuthenticated = function (req, res, next) {
 	// if user is authenticated in the session, call the next() to call the next request handler 
 	// Passport adds this method to request object. A middleware is allowed to add properties to
@@ -20,13 +19,10 @@ var isAuthenticated = function (req, res, next) {
 
 module.exports = function(passport){
 
-	/* GET login page. */
 	router.get('/', function(req, res) {
-    	// Display the Login page with any flash message, if any
 		res.render('login', { message: req.flash('message')});
 	});
-//db.GetVideoByUser("1")
-	/* Handle Login POST */
+
 	router.post('/login', passport.authenticate('login', {
 		successRedirect: '/home',
 		failureRedirect: '/',
@@ -59,7 +55,6 @@ module.exports = function(passport){
 
 	// код загрузки відоса
 	router.post('/', function(req, res, next) { 
-	    // create a form to begin parsing
 	    var form = new multiparty.Form();
 	    var uploadFile = {uploadPath: '', type: '', size: 0};
 	    var maxSize = 1000000000; //MB
@@ -86,16 +81,20 @@ module.exports = function(passport){
 	    });
 	    var path ="";
 	    var filename ="";
-		
-	    // listen on part event for image file
+
 	    form.on('part', function(part) {
 	        uploadFile.size = part.byteCount;
 	        uploadFile.type = part.headers['content-type'];
-	        uploadFile.path = 'public/files/' + part.filename;
-			uploadFile.pathSQL = './files/' + part.filename;
-			screenshot_pathSQL = './files/Screenshot/' + part.filename + ".png";
-	        //path = uploadFile.path;
-	        filename = part.filename;
+			// screenshot_pathSQL = './files/Screenshot/' + part.filename + ".png";
+			// uploadFile.path = 'public/files/' + part.filename;
+			// uploadFile.pathSQL = './files/' + part.filename;
+
+			// Забираємо формат відео з назви
+	        filename = part.filename.slice(0, -4);
+			console.log("fileName :" + filename);
+			screenshot_pathSQL = './files/Screenshot/' + filename  + ".png";
+			uploadFile.path = 'public/files/' + filename;
+			uploadFile.pathSQL = './files/' + filename;
 
 	        if(uploadFile.size > maxSize) {
 	            errors.push('File size is ' + uploadFile.size / 1024 / 1024 + '. Limit is' + (maxSize / 1024 / 1024) + 'MB.');
@@ -114,10 +113,8 @@ module.exports = function(passport){
 	        }
 
 	        var post = { user_id: req.user.id, name: filename,  path: uploadFile.pathSQL, screenshot_path: screenshot_pathSQL };
-			db.PostDataVideos(post);
-
-			ffmpeg.videoScreen( filename, uploadFile.path);
-			
+			db.PostDataVideos(post, filename, uploadFile.path );
+			// ffmpeg.videoScreen( filename, uploadFile.path);	
 	    });
 	    form.parse(req);
 	});
@@ -141,15 +138,10 @@ module.exports = function(passport){
 			res.render('index', { data });
 			}
 		});	
-		//res.render('index');
 	});
 
 	return router;
 }
-
-//  var uploadFilepathSQL = "public/files/----Gorilla Riders---- Спартак Алемасов и его Nissan Silvia.mp4";
-//  var filename = "----Gorilla Riders---- Спартак Алемасов и его Nissan Silvia.mp4"; // з БД
-//ffmpeg.videoScreen( filename, uploadFilepathSQL);
 
 
 
