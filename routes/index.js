@@ -2,10 +2,15 @@ var express = require('express'),
 	router = express.Router(),
 	fs = require("fs"),
 	mysql = require('mysql'),
-	multiparty = require('multiparty');
+	multiparty = require('multiparty'),
+	bodyParser = require('body-parser');
 	var ffmpeg = require('fluent-ffmpeg');
 	var ffmpeg = require("../controllers/screenshot");
 	var db = require('../models/query');
+	var url = require('url');
+	var http = require('http');
+
+	var app = express();
 	
 var isAuthenticated = function (req, res, next) {
 	// if user is authenticated in the session, call the next() to call the next request handler 
@@ -119,16 +124,46 @@ module.exports = function(passport){
 	    form.parse(req);
 	});
 
+	// router.get('/video', function(req, res) {
+	// 	req.query.id; 
+	// 	db.GetVideoById( req.query.id , function(err,data){
+	// 		if(err) console.log("ERROR : "+ err);
+	// 		else  {
+	// 			res.render('videoPlayer', { data });
+	// 		}
+	// 	});
+
+	// 	db.GetCommentByVideoId( req.query.id , function(err,data2){
+	// 		if(err) console.log("ERROR : "+ err);
+	// 		else  {
+	// 			console.log("result : "+ data2[0].comment + " "+ data2[0].user_id);
+	// 			res.render('videoPlayer', { data2 });
+	// 		}
+	// 	});
+	// });
+
+
 	router.get('/video', function(req, res) {
 		req.query.id; 
-		console.log("req.query.id :" + req.query.id);
-		db.GetVideoById( req.query.id , function(err,data){
+		db.GetVideoUserCommentData( req.query.id , function(err,data){
 			if(err) console.log("ERROR : "+ err);
-			else  {
-				console.log("result : "+ data[0].name + " "+ data[0].path);
-				res.render('videoPlayer', { data });
-			}
+				else {
+					res.render('videoPlayer', { data });
+					console.log(data);
+				}
+			})
 		});
+
+
+	router.post('/videocomment', isAuthenticated, function(req, res, next) {
+		var videoID = url.parse(req.headers.referer, true).query;
+
+		db.SetCommet( videoID.id , req.user.id , req.body.comment , req.body.RatingStars, function(err, data){
+			if(err) console.log("ERROR : "+ err);
+			else console.log("result : "+ data);
+		});
+
+		res.redirect(req.headers.referer); 			
 	});
 
 	router.get('/index', function(req, res) {

@@ -11,7 +11,8 @@ block content
                                 $(".RatingBar").barrating({
                                 theme: 'css-stars'     
                                 });
-                                $("#"+"#{thing.id}").barrating('set', "#{thing.AVGRATING}");
+                                $("#"+"#{thing.id}").barrating('set', "#{thing.AVGRATING}");  
+                                $("#"+"#{thing.id}").barrating('readonly', true);                              
                             });
                         a(href="/video?id=#{thing.id}") 
                             p.size #{thing.name}                     						

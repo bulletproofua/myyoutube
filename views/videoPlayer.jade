@@ -5,7 +5,7 @@ block content
         div.row
             div.videoPlayer.col-md-10.col-md-offset-1
                 p#title-name #{data[0].name}
-                -console.log("data : " + data[0].AVG);
+                -console.log("data : " + data[0].AVGRATING);
                 video(controls="")
                     source(src='#{data[0].path}', type='video/mp4')
                     |   Your browser does not support HTML5 video.                    
@@ -14,7 +14,8 @@ block content
                         $(".RatingBar").barrating({
                         theme: 'css-stars'     
                         });
-                        $("#"+"#{data[0].id}").barrating('set', "#{data[0].AVG}");
+                        $("#"+"#{data[0].id}").barrating('set', "#{data[0].AVGRATING}");
+                        $("#"+"#{data[0].id}").barrating('readonly', true);
                     });
                 p Додано : #{data[0].added_date}
                 p.userName Загрузив : #{data[0].full_name}
@@ -27,30 +28,43 @@ block content
                         option(value='4') 4
                         option(value='5') 5
                     //- div.br-widget
-                p Рейтинг : #{data[0].AVG}
-            div.col-md-8.col-md-offset-2
-                div.commentBlock
-                    ul 
-                        li #{data[0].full_name}
-                        li Оцінка : #{data[0].rating}
-                        li Текст: #{data[0].comment}
+                p Рейтинг : #{data[0].AVGRATING}
+                p Коментів : #{data[0].commentsCount}
+            div.col-md-8.col-md-offset-2                
+                    div.commentBlock
+                        ul  
+                            li #{data[0].full_name}
+                                script(type='text/javascript').
+                                    $(function() {
+                                        $(".RatingBar").barrating({
+                                        theme: 'css-stars'     
+                                        });
+                                        $("#qwer").barrating('set', "#{data[0].rating}");
+                                        $("#qwer").barrating('readonly', true);                                    
+                                    });
+                                .br-wrapper.br-theme-css-stars                   
+                                    select.RatingBar(id="qwer")
+                                        option(value='1') 1
+                                        option(value='2') 2
+                                        option(value='3') 3  
+                                        option(value='4') 4
+                                        option(value='5') 5
+                            li Оцінка : #{data[0].rating}
+                            li Текст: #{data[0].comment}
+
             div.col-md-8.col-md-offset-2
                 div.addComment
-                    form
+                    form(action='/videocomment', method='POST')
                         .br-wrapper.br-theme-css-stars                   
-                            select.RatingBar(id="#{data[0].id}")
+                            select(name = "RatingStars").RatingBar(id="#{data[0].id}")
                                 option(value='')
                                 option(value='1') 1
                                 option(value='2') 2
                                 option(value='3') 3  
                                 option(value='4') 4
                                 option(value='5') 5
-                        textarea(class="form-control", placeholder ="Відгук")
+                        textarea(class="form-control", placeholder ="Відгук", name ="comment", value ="asdasd")
                         button(class='btn btn-primary btn-block', type='submit') Відправити
-
-
-
-
 
 
 

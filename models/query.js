@@ -63,13 +63,8 @@ exports.GetVideo = function(callback){
     });
 };
 
-// SELECT videos.*, users.full_name, raitings.video_id, AVG(raitings.rating) 
-// FROM videos 
-// INNER JOIN users ON videos.user_id = users.id
-// INNER JOIN raitings ON videos.id = raitings.video_id 
-// WHERE videos.id=? ;
 exports.GetVideoById = function( id, callback ){
-    connection.query('SELECT videos.*, users.full_name, raitings.*, AVG(raitings.rating) as "AVG" FROM videos INNER JOIN users ON videos.user_id = users.id INNER JOIN raitings ON videos.id = raitings.video_id WHERE videos.id=?', id , function(err, rows, fields) {
+    connection.query('SELECT videos.*, users.full_name, COUNT(raitings.id) as commentsCount, AVG(raitings.rating) as "AVGRATING" FROM videos INNER JOIN users ON videos.user_id = users.id INNER JOIN raitings ON videos.id = raitings.video_id WHERE videos.id=?', id , function(err, rows, fields) {
     if (err){
             callback(err,null);
         } else {
@@ -77,6 +72,84 @@ exports.GetVideoById = function( id, callback ){
         }              
     });
 };
+
+
+
+exports.GetCommentByVideoId = function( video_id, callback ){
+    connection.query('SELECT users.full_name, raitings.* FROM videos JOIN users ON videos.user_id = users.id JOIN raitings ON videos.id = raitings.video_id WHERE raitings.video_id = ? ORDER BY raitings.added DESC', video_id , function(err, rows, fields) {
+    if (err){
+            callback(err,null);
+        } else {
+             callback(null, rows);
+        }              
+    });
+};
+
+
+
+// SELECT videos.*, raitings.* FROM VIDEOS JOIN USERS ON videos.user_id = users.id JOIN raitings ON videos.id = raitings.video_id where videos.id = ? GROUP BY raitings.added DESC
+
+
+exports.GetVideoUserCommentData = function( video_id, callback ){
+    connection.query('SELECT videos.*, users.full_name, raitings.* FROM VIDEOS JOIN USERS ON videos.user_id = users.id JOIN raitings ON videos.id = raitings.video_id where videos.id = ? GROUP BY raitings.added DESC', video_id , function(err, rows, fields) {
+    if (err){
+            callback(err,null);
+        } else {
+             callback(null, rows);
+        }              
+    });
+};
+
+
+// exports.GetVideoUserCommentData = function( video_id, callback ){
+//     connection.query('SELECT videos.*, raitings.* FROM VIDEOS JOIN USERS ON videos.user_id = users.id JOIN raitings ON videos.id = raitings.video_id where videos.id = ? GROUP BY raitings.added DESC', video_id , function(err, rows, fields) {
+//     if (err){
+//             callback(err,null);
+//         } else {
+//              callback(null, rows);
+//         }              
+//     });
+// };
+//  var insertQuery = "INSERT INTO users ( login, full_name, pass ) values ('" + login +"','"+ user.full_name +"','"+ pass +"')";
+// SELECT EXISTS ( SELECT* FROM raitings WHERE video_id =8 AND user_id =2);
+
+exports.SetCommet = function(video_id, user_id, comment, rating, callback){   
+    connection.query('SELECT EXISTS (SELECT * FROM raitings WHERE video_id ='+video_id+' AND user_id ='+user_id+') as "Status"', function(err, rows, fields) {
+    if (err) callback(err,null);
+        if (!err){           
+                // console.log(rows[0].Status);
+                if(rows[0].Status == 1){                
+                    if(comment == " " || comment == null) comment = "No comments. Only stars";
+                    var insertQuery = "UPDATE raitings SET video_id = '"+ video_id +"', user_id = '"+ user_id +"', comment = '"+comment+"', rating ='"+ rating +"' WHERE video_id ='"+video_id+"' AND user_id ='"+user_id+"'";
+                    connection.query( insertQuery , function(err, rows, fields){
+                        if (!err){
+                            console.log('insert comment: ', rows);
+                            } 
+                        else
+                            console.log(err);
+                        });              
+                }
+
+                if(rows[0].Status == 0){
+                    console.log("Комента нема");  
+                        if(comment == " " || comment == null) comment = "No comments. Only stars";
+                        var insertQuery = "INSERT INTO raitings ( video_id, user_id, comment, rating ) values ('"+ video_id +"','"+ user_id +"','"+ comment +"','"+ rating +"')";
+                        connection.query( insertQuery , function(err, rows, fields){
+                            if (!err){
+                                console.log('insert comment: ', rows);
+                                } 
+                            else
+                                console.log(err);
+                                console.log('!INSERT comment.');
+                            });              
+                }
+        }               
+    });
+
+
+
+
+}
 
 exports.cnnectionEnd = function(){
     connection.end();
