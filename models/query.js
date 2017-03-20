@@ -90,11 +90,27 @@ exports.GetCommentByVideoId = function( video_id, callback ){
 // SELECT videos.*, raitings.* FROM VIDEOS JOIN USERS ON videos.user_id = users.id JOIN raitings ON videos.id = raitings.video_id where videos.id = ? GROUP BY raitings.added DESC
 
 
+// exports.GetVideoUserCommentData = function( video_id, callback ){
+//     connection.query('SELECT videos.*, users.full_name, raitings.* FROM VIDEOS JOIN USERS ON videos.user_id = users.id JOIN raitings ON videos.id = raitings.video_id where videos.id = ? GROUP BY raitings.added DESC', video_id , function(err, rows, fields) {
+//     if (err){
+//             callback(err,null);
+//         } else {
+
+//              callback(null, rows);
+//         }              
+//     });
+// };
+
+// SELECT T2.full_name, T1.* FROM (SELECT  videos.*, users.full_name as ufull_name, raitings.comment,  raitings.added ,videos.user_id as VUid FROM raitings JOIN videos ON videos.id = raitings.video_id JOIN USERS ON raitings.user_id = users.id where videos.id = 8) T1 JOIN users as T2 ON T1.VUid = T2.id 
+
+
+
 exports.GetVideoUserCommentData = function( video_id, callback ){
-    connection.query('SELECT videos.*, users.full_name, raitings.* FROM VIDEOS JOIN USERS ON videos.user_id = users.id JOIN raitings ON videos.id = raitings.video_id where videos.id = ? GROUP BY raitings.added DESC', video_id , function(err, rows, fields) {
+    connection.query('SELECT T2.full_name, T1.* FROM (SELECT  videos.*, users.full_name as ufull_name, raitings.comment, raitings.rating, raitings.added as RADD,videos.user_id as VUid FROM raitings JOIN videos ON videos.id = raitings.video_id JOIN USERS ON raitings.user_id = users.id where videos.id =?) T1 JOIN users as T2 ON T1.VUid = T2.id order by RADD DESC', video_id , function(err, rows, fields) {
     if (err){
             callback(err,null);
         } else {
+
              callback(null, rows);
         }              
     });

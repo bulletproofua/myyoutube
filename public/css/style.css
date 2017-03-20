@@ -195,6 +195,10 @@ ul.user-details{
     padding-left: 10px;
     list-style-type: none;
 }
+.commentBlock li span{
+    float: right;
+}
+
 .addComment{
     margin-top: 10px;
 }

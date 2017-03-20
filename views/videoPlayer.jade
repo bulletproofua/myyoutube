@@ -5,7 +5,6 @@ block content
         div.row
             div.videoPlayer.col-md-10.col-md-offset-1
                 p#title-name #{data[0].name}
-                -console.log("data : " + data[0].AVGRATING);
                 video(controls="")
                     source(src='#{data[0].path}', type='video/mp4')
                     |   Your browser does not support HTML5 video.                    
@@ -14,7 +13,7 @@ block content
                         $(".RatingBar").barrating({
                         theme: 'css-stars'     
                         });
-                        $("#"+"#{data[0].id}").barrating('set', "#{data[0].AVGRATING}");
+                        $("#"+"#{data[0].id}").barrating('set', 1 ); //'#{AVGrating}'
                         $("#"+"#{data[0].id}").barrating('readonly', true);
                     });
                 p Додано : #{data[0].added_date}
@@ -28,29 +27,31 @@ block content
                         option(value='4') 4
                         option(value='5') 5
                     //- div.br-widget
-                p Рейтинг : #{data[0].AVGRATING}
-                p Коментів : #{data[0].commentsCount}
-            div.col-md-8.col-md-offset-2                
+                p Рейтинг : #{AVGrating}  
+                p Коментів : #{commentCount}
+            div.col-md-8.col-md-offset-2 
+                each thing, i in data               
                     div.commentBlock
                         ul  
-                            li #{data[0].full_name}
+                            li #{data[i].ufull_name} 
+                                span #{data[i].RADD}
                                 script(type='text/javascript').
                                     $(function() {
                                         $(".RatingBar").barrating({
                                         theme: 'css-stars'     
                                         });
-                                        $("#qwer").barrating('set', "#{data[0].rating}");
+                                        $("#"+"#{data[i].rating}").barrating('set', "#{data[i].rating}");
                                         $("#qwer").barrating('readonly', true);                                    
                                     });
                                 .br-wrapper.br-theme-css-stars                   
-                                    select.RatingBar(id="qwer")
+                                    select.RatingBar(id="#{data[i].rating}")
                                         option(value='1') 1
                                         option(value='2') 2
                                         option(value='3') 3  
                                         option(value='4') 4
                                         option(value='5') 5
-                            li Оцінка : #{data[0].rating}
-                            li Текст: #{data[0].comment}
+                            li Оцінка : #{data[i].rating}
+                            li Текст: #{data[i].comment}
 
             div.col-md-8.col-md-offset-2
                 div.addComment
@@ -63,7 +64,7 @@ block content
                                 option(value='3') 3  
                                 option(value='4') 4
                                 option(value='5') 5
-                        textarea(class="form-control", placeholder ="Відгук", name ="comment", value ="asdasd")
+                        textarea(class="form-control", placeholder ="Відгук", name ="comment")
                         button(class='btn btn-primary btn-block', type='submit') Відправити
 
 

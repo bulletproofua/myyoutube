@@ -148,8 +148,13 @@ module.exports = function(passport){
 		db.GetVideoUserCommentData( req.query.id , function(err,data){
 			if(err) console.log("ERROR : "+ err);
 				else {
-					res.render('videoPlayer', { data });
-					console.log(data);
+					var RatingCount = 0;
+					for(var i = 0; i < data.length; i++){
+						RatingCount += data[i].rating;
+					} 
+					RatingCount = (RatingCount/data.length).toFixed(1);
+
+					res.render('videoPlayer', { data, commentCount: data.length, AVGrating : RatingCount });
 				}
 			})
 		});
