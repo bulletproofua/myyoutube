@@ -1,8 +1,8 @@
 var express = require('express'),
 	ffmpeg = require('fluent-ffmpeg');
 
-ffmpeg.setFfprobePath("G:\\MyGit\\mini_youtube\\ffmpeg\\bin\\ffprobe.exe");
-ffmpeg.setFfmpegPath("G:\\MyGit\\mini_youtube\\ffmpeg\\bin\\ffmpeg.exe");
+ffmpeg.setFfprobePath("G:\\MyGit\\myyoutube\\ffmpeg\\bin\\ffprobe.exe");
+ffmpeg.setFfmpegPath("G:\\MyGit\\myyoutube\\ffmpeg\\bin\\ffmpeg.exe");
 
 // var videoLink = "./files/Ахахаха [720].mp4";
 // var videoName = "Ахахаха[720].mp4"; // з БД
@@ -20,7 +20,6 @@ exports.videoScreen = function(videoName, videoLink ){
 		filename: videoNameForScreen,
 		timestamps: ['00:00:10.123']
 		}, screenPath, function(err) {
-		console.log('screenshots were saved')
 	});
 };
 

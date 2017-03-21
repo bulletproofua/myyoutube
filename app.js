@@ -85,20 +85,20 @@ if (app.get('env') === 'development') {
     //     else console.log("result : "+ data);
 	// });
 
-app.use('/videocomment', bodyParser.urlencoded({
-		extended: true
-	}));
+// app.use('/videocomment', bodyParser.urlencoded({
+// 		extended: true
+// 	}));
 
-	app.post('/videocomment', function(req, res, next) {		
-		// console.log("User" + req.user);
-		console.dir(req.comment);
+// 	app.post('/videocomment', function(req, res, next) {		
+// 		// console.log("User" + req.user);
+// 		console.dir(req.comment);
 		
-	// db.SetCommet(8 ,2," ",2, function(err, data){
-    //     if(err) console.log("ERROR : "+ err);
-    //     else console.log("result : "+ data);
-	// });
+// 	// db.SetCommet(8 ,2," ",2, function(err, data){
+//     //     if(err) console.log("ERROR : "+ err);
+//     //     else console.log("result : "+ data);
+// 	// });
 		
-	});
+// 	});
 
 
     server = app.listen(3000, function(){

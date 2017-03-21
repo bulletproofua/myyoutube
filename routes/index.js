@@ -9,6 +9,7 @@ var express = require('express'),
 	var db = require('../models/query');
 	var url = require('url');
 	var http = require('http');
+	var DF = require('../controllers/dateFormat'); 
 
 	var app = express();
 	
@@ -87,6 +88,15 @@ module.exports = function(passport){
 	    var path ="";
 	    var filename ="";
 
+		// function someFunc(){ 
+		// 	var inputFileName = document.getElementById("inputName").value;		
+		// 	alert("fsdfsdfsf__________ " +inputFileName);	
+		// }
+		// document.getElementById("btnID").onclick = someFunc;
+
+		//  var a = req.body.fileName;
+		//  console.log("req.body.fileName " + a);
+
 	    form.on('part', function(part) {
 	        uploadFile.size = part.byteCount;
 	        uploadFile.type = part.headers['content-type'];
@@ -118,29 +128,11 @@ module.exports = function(passport){
 	        }
 
 	        var post = { user_id: req.user.id, name: filename,  path: uploadFile.pathSQL, screenshot_path: screenshot_pathSQL };
-			db.PostDataVideos(post, filename, uploadFile.path );
-			// ffmpeg.videoScreen( filename, uploadFile.path);	
+			// db.PostDataVideos(post, filename, uploadFile.path );
 	    });
 	    form.parse(req);
 	});
 
-	// router.get('/video', function(req, res) {
-	// 	req.query.id; 
-	// 	db.GetVideoById( req.query.id , function(err,data){
-	// 		if(err) console.log("ERROR : "+ err);
-	// 		else  {
-	// 			res.render('videoPlayer', { data });
-	// 		}
-	// 	});
-
-	// 	db.GetCommentByVideoId( req.query.id , function(err,data2){
-	// 		if(err) console.log("ERROR : "+ err);
-	// 		else  {
-	// 			console.log("result : "+ data2[0].comment + " "+ data2[0].user_id);
-	// 			res.render('videoPlayer', { data2 });
-	// 		}
-	// 	});
-	// });
 
 
 	router.get('/video', function(req, res) {
@@ -150,10 +142,20 @@ module.exports = function(passport){
 				else {
 					var RatingCount = 0;
 					for(var i = 0; i < data.length; i++){
-						RatingCount += data[i].rating;
+						
+						RatingCount += data[i].rating;						
 					} 
 					RatingCount = (RatingCount/data.length).toFixed(1);
-
+					if(data[0].description == null ||data[0].description == " "){
+						data[0].description = "No description";
+					}
+					//dateFormat
+					data[0].added_date = DF.dataFormat(data[0].added_date);
+					for(var j = 0; j < data.length; j++){
+						data[j].RADD = DF.dataFormat(data[j].RADD);
+					}
+					
+					// console.log(typeof(" "+ data[0].added_date));
 					res.render('videoPlayer', { data, commentCount: data.length, AVGrating : RatingCount });
 				}
 			})

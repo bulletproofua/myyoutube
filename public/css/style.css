@@ -1,4 +1,6 @@
 
+
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -107,14 +109,16 @@ ul.user-details{
     height: 300px;
     width: auto;
     margin: 5px 5px;
+    padding: 15px;
     border: 1px solid #ccc;
 }
 
 .videoHome p {
-    font-size: 12px;
     padding: 5px 0;
     margin: 0px;
 }
+
+
 /*.videoHome a {
     white-space: nowrap;
     overflow: hidden;
@@ -124,6 +128,12 @@ ul.user-details{
 .videoHome a p{
     margin:0px;
     padding: 0px;
+
+}
+.videoHome a p{
+    font-size: 1.2em;
+    /*font-family: 'Bree Serif', serif;*/
+    font-family: 'Tinos', serif;
 }
 .size {
     white-space: nowrap; /* Отменяем перенос текста */
@@ -133,12 +143,18 @@ ul.user-details{
 }
 
 .videoHome img {
-    text-align:center;
-    height: 170px;
-    width: auto;
+    /*text-align:center;*/
+    height: auto;
+    width: 100%;
 }
 
-
+.currentRating {
+    text-align: center;
+    color: dimgrey;
+}
+.Stars div {    
+    text-align: center;
+}
 
 /*----------VIDEO_PLAYER-----------*/
     a:link { text-decoration: none; }
