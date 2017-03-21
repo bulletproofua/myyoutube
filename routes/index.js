@@ -182,6 +182,10 @@ module.exports = function(passport){
 		});	
 	});
 
+	router.get('/stars', function(req, res) {
+			res.render('stars');
+	});
+
 	return router;
 }
 

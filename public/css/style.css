@@ -152,9 +152,9 @@ ul.user-details{
     text-align: center;
     color: dimgrey;
 }
-.Stars div {    
+/*.Stars div {    
     text-align: center;
-}
+}*/
 
 /*----------VIDEO_PLAYER-----------*/
     a:link { text-decoration: none; }
@@ -218,3 +218,4 @@ ul.user-details{
 .addComment{
     margin-top: 10px;
 }
+
