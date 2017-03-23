@@ -33,7 +33,7 @@ block content
                 div.addComment
                     form(action='/videocomment', method='POST')
                         if userIn == true
-                            input(id='userLog', class="rating rating-loading", name = "RatingStars", value='0', data-min="0", data-max="5", data-step="1", data-size="xs")
+                            input(id='userLog', class="rating rating-loading", name = "RatingStars", value='0', data-min="0", data-max="5", data-step="0.1", data-size="xs")
                             textarea(class="form-control", placeholder ="Your comment", name ="comment")
                             button(class='btn btn-primary btn-block', type='submit') Відправити
                         if userIn == false

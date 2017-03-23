@@ -14,18 +14,23 @@ block content
                         li
                             a(href='/sortByDate') Date                     
 
-        div.row
-            div.col-md-12.col-sm-12
-                each thing in data
-                    div.col-md-3.col-sm-6.col-xs-12.videoHome
-                        a(href="/video?id=#{thing.id}")                                             						
-                            img.videoLink(src="#{thing.screenshot_path}", alt="screenshot")
-                            p.size #{thing.name}    
-                        p.size #{thing.added_date}
-                        p.size Download: #{thing.full_name}
-                        p.size Comments: #{thing.commentsCount}
-                        input(id='#{thing.id}', class="rating rating-loading", value='#{thing.AVGRATING}', data-min="0", data-max="5", data-step="0.1", data-size="xs2", readonly = true, showClear = false, hoverChangeCaption = false, hoverEnabled = false )
+            div.row
+                div.col-md-12.col-sm-12
+                    each thing in data
+                        div.col-md-3.col-sm-6.col-xs-12.videoHome
+                            a(href="/video?id=#{thing.id}")                                             						
+                                img.videoLink(src="#{thing.screenshot_path}", alt="screenshot")
+                                p 
+                                    span.dateVideoHome #{thing.added_date}
+                                    .dateVideoHome.dateVideoHomeBack
+                                p.size.textCenter #{thing.name} 
+                                hr
+                            .colorBlock    
+                                .text-center
+                                    input(id='#{thing.id}', class="rating rating-loading pull-center", value='#{thing.AVGRATING}', data-min="0", data-max="5", data-step="0.1", data-size="xs2", readonly = true )       
+                                .bottomVideoHome
+                                    p.size Download: #{thing.full_name}
+                                    p Comments: #{thing.commentsCount}
+                        
 
 block otherScripts
-    //- script(src='/libs/jquery-bar-rating/dist/jquery.barrating.min.js')
-    //- script(src='/libs/jquery-bar-rating/dist/startRatingConfig.js') 
