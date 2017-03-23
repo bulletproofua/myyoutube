@@ -32,6 +32,10 @@ a p{
     margin: 0px;
     padding: 5px 0 0 0 ;
 }
+.IndexUserName{
+    /*font-size: 1.2em;*/
+    font-family: 'Comfortaa', cursive;
+}
 
 #NameUser {
     margin: 0px;
@@ -162,6 +166,7 @@ ul.user-details{
     width: auto;
     border: 1px solid #ccc;
     box-shadow:  1px 3px 6px rgba(0,0,0,0.2);
+    font-family: 'Roboto Slab', serif;
 }
 .videoHome a :hover {
     text-decoration: none;

@@ -23,13 +23,14 @@ block content
                                 p 
                                     span.dateVideoHome #{thing.added_date}
                                     .dateVideoHome.dateVideoHomeBack
-                                p.size.textCenter #{thing.name} 
+                                p.size.IndexUserName.textCenter #{thing.name} 
                                 hr
                             .colorBlock    
                                 .text-center
                                     input(id='#{thing.id}', class="rating rating-loading pull-center", value='#{thing.AVGRATING}', data-min="0", data-max="5", data-step="0.1", data-size="xs2", readonly = true )       
                                 .bottomVideoHome
-                                    p.size uploaded by: #{thing.full_name}
+                                    p.size uploaded by: 
+                                        span.IndexUserName #{thing.full_name}
                                     p comments: #{thing.commentsCount}
                         
 
