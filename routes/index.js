@@ -25,13 +25,13 @@ var isAuthenticated = function (req, res, next) {
 
 module.exports = function(passport){
 
-	router.get('/', function(req, res) {
+	router.get('/login', function(req, res) {
 		res.render('login', { message: req.flash('message')});
 	});
 
 	router.post('/login', passport.authenticate('login', {
 		successRedirect: '/home',
-		failureRedirect: '/',
+		failureRedirect: '/login',
 		failureFlash : true  
 	}));
 
@@ -48,8 +48,12 @@ module.exports = function(passport){
 	router.get('/home', isAuthenticated, function(req, res){
 		db.GetVideoByUser( req.user.id , function(err, data){
 			if(err) console.log("ERROR : "+ err);
-			else  {console.log("result : "+ data);
-			res.render('home', { user: req.user ,  data });
+			else  {
+				for(var j = 0; j < data.length; j++){
+					data[j].added_date = DF.dataFormat(data[j].added_date);
+					if (data[j].AVGRATING == null || data[j].AVGRATING == undefined) data[j].AVGRATING = 0;					
+				}
+			res.render('home', { data, userName: req.user, userIn: req.isAuthenticated() });
 			}
 		});	
 	});
@@ -100,16 +104,13 @@ module.exports = function(passport){
 	    form.on('part', function(part) {
 	        uploadFile.size = part.byteCount;
 	        uploadFile.type = part.headers['content-type'];
-			// screenshot_pathSQL = './files/Screenshot/' + part.filename + ".png";
-			// uploadFile.path = 'public/files/' + part.filename;
-			// uploadFile.pathSQL = './files/' + part.filename;
-
-			// Забираємо формат відео з назви
-	        filename = part.filename.slice(0, -4);
+	        // filename = part.filename.slice(0, -4);
+			filename = part.filename.slice(0, -4);
+			filenameSQL = part.filename;
 			console.log("fileName :" + filename);
 			screenshot_pathSQL = './files/Screenshot/' + filename  + ".png";
-			uploadFile.path = 'public/files/' + filename;
-			uploadFile.pathSQL = './files/' + filename;
+			uploadFile.path = 'public/files/' + filenameSQL;
+			uploadFile.pathSQL = './files/' + filenameSQL;
 
 	        if(uploadFile.size > maxSize) {
 	            errors.push('File size is ' + uploadFile.size / 1024 / 1024 + '. Limit is' + (maxSize / 1024 / 1024) + 'MB.');
@@ -128,7 +129,7 @@ module.exports = function(passport){
 	        }
 
 	        var post = { user_id: req.user.id, name: filename,  path: uploadFile.pathSQL, screenshot_path: screenshot_pathSQL };
-			// db.PostDataVideos(post, filename, uploadFile.path );
+			db.PostDataVideos(post, filename, uploadFile.path );
 	    });
 	    form.parse(req);
 	});
@@ -138,6 +139,7 @@ module.exports = function(passport){
 	router.get('/video', function(req, res) {
 		req.query.id; 
 		db.GetVideoUserCommentData( req.query.id , function(err,data){
+			console.log("data" + data);
 			if(err) console.log("ERROR : "+ err);
 				else {
 					var RatingCount = 0;
@@ -146,17 +148,18 @@ module.exports = function(passport){
 						RatingCount += data[i].rating;						
 					} 
 					RatingCount = (RatingCount/data.length).toFixed(1);
-					if(data[0].description == null ||data[0].description == " "){
-						data[0].description = "No description";
-					}
 					//dateFormat
 					data[0].added_date = DF.dataFormat(data[0].added_date);
 					for(var j = 0; j < data.length; j++){
 						data[j].RADD = DF.dataFormat(data[j].RADD);
 					}
 					
+					// console.log("---------------------");
+					// console.log("data" + data);
+					// console.log("data" + data[0].description);
+					// console.log("---------------------");
 					// console.log(typeof(" "+ data[0].added_date));
-					res.render('videoPlayer', { data, commentCount: data.length, AVGrating : RatingCount });
+					res.render('videoPlayer', { data, commentCount: data.length, AVGrating : RatingCount, userName: req.user, userIn: req.isAuthenticated() });
 				}
 			})
 		});
@@ -173,11 +176,15 @@ module.exports = function(passport){
 		res.redirect(req.headers.referer); 			
 	});
 
-	router.get('/index', function(req, res) {
+	router.get('/', function(req, res) {
 		db.GetVideo(function(err, data) {
 			if(err) console.log("ERROR : "+ err);
-			else  {console.log("result : "+ data);
-			res.render('index', { data });
+			else  {
+				// console.log("result : "+ data);
+					for(var j = 0; j < data.length; j++){
+						data[j].added_date = DF.dataFormat(data[j].added_date);
+					}
+				res.render('index', { data, userName: req.user, userIn: req.isAuthenticated() });
 			}
 		});	
 	});

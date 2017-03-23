@@ -38,12 +38,17 @@ exports.PostDataVideos = function(post, filename, uploadFile){
 // зали базу норм заповню
 // SELECT * , AVG(raitings.rating) as 'AVGRATING' FROM videos JOIN raitings ON videos.id = raitings.video_id WHERE videos.user_id =1 LIMIT 8
 
+// SELECT *, COUNT(raitings.id) as commentsCount, AVG(raitings.rating) as "AVGRATING" FROM videos Left JOIN raitings ON videos.id = raitings.video_id WHERE videos.user_id =8 GROUP BY videos.id ORDER BY AVGRATING DESC
 exports.GetVideoByUser = function(user_id, callback){
-    connection.query('SELECT * FROM videos JOIN raitings ON videos.id = raitings.video_id WHERE videos.user_id =? LIMIT 8', user_id, function(err, rows, fields) {
+    connection.query('SELECT videos.*, COUNT(raitings.id) as commentsCount, AVG(raitings.rating) as "AVGRATING" FROM videos Left JOIN raitings ON videos.id = raitings.video_id WHERE videos.user_id =? GROUP BY videos.id ORDER BY AVGRATING DESC', user_id, function(err, rows, fields) {
     if (err){
             callback(err,null);
         } else {
+             console.log("----------------------");
+             console.log(rows);
+             console.log("----------------------");
              callback(null, rows);
+
         }              
     });
 };
@@ -54,7 +59,7 @@ exports.GetVideoByUser = function(user_id, callback){
 // JOIN (USERS, raitings) ON (videos.user_id = users.id AND videos.id = raitings.video_id) GROUP BY videos.id ORDER BY videos.added_date DESC LIMIT 8 OFFSET 0
 
 exports.GetVideo = function(callback){
-    connection.query('SELECT Videos.*, COUNT(raitings.id) as commentsCount, AVG(raitings.rating) as "AVGRATING" FROM VIDEOS JOIN (USERS, raitings) ON (videos.user_id = users.id AND videos.id = raitings.video_id) GROUP BY videos.id ORDER BY AVGRATING DESC LIMIT 8 OFFSET 0', function(err, rows, fields) {
+    connection.query('SELECT Videos.*, users.full_name, COUNT(raitings.id) as commentsCount, AVG(raitings.rating) as "AVGRATING" FROM VIDEOS JOIN (USERS, raitings) ON (videos.user_id = users.id AND videos.id = raitings.video_id) GROUP BY videos.id ORDER BY AVGRATING DESC LIMIT 8 OFFSET 0', function(err, rows, fields) {
     if (err){
             callback(err,null);
         } else {
@@ -106,7 +111,7 @@ exports.GetCommentByVideoId = function( video_id, callback ){
 
 
 exports.GetVideoUserCommentData = function( video_id, callback ){
-    connection.query('SELECT T2.full_name, T1.* FROM (SELECT  videos.*, users.full_name as ufull_name, raitings.comment, raitings.rating, raitings.added as RADD,videos.user_id as VUid FROM raitings JOIN videos ON videos.id = raitings.video_id JOIN USERS ON raitings.user_id = users.id where videos.id =?) T1 JOIN users as T2 ON T1.VUid = T2.id order by RADD DESC', video_id , function(err, rows, fields) {
+    connection.query('SELECT T2.full_name, T1.* FROM (SELECT  videos.*, users.full_name as ufull_name, raitings.comment, raitings.rating, raitings.added as RADD,videos.user_id as VUid FROM raitings RIGHT JOIN videos ON videos.id = raitings.video_id LEFT JOIN USERS ON raitings.user_id = users.id where videos.id =?) T1 JOIN users as T2 ON T1.VUid = T2.id order by RADD DESC', video_id , function(err, rows, fields) {
     if (err){
             callback(err,null);
         } else {

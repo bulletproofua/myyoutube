@@ -6,19 +6,17 @@ html
     meta(http-equiv='X-UA-Compatible' content='IE=edge')
     meta(name='viewport' content='width=device-width, initial-scale=1')
     meta(name='description' content="")
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    //- link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/css/style.css')
-    link(rel="stylesheet", href="/libs/bootstrap/dist/css/bootstrap.css")
-    //- link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
-    link(rel="stylesheet", href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css")
-    link(rel="stylesheet", href="/css/stars.css")
+    link(rel="stylesheet", href="/libs/bootstrap/dist/css/bootstrap.css") 
+       
     link(href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet")
     link(href="https://fonts.googleapis.com/css?family=Tinos" rel="stylesheet")
 
-    link(rel='stylesheet', href='/css/fontawesome-stars-o.css')
+    //- link(rel='stylesheet', href='/css/fontawesome-stars-o.css')
+    //- stars    
+    link(href='/libs/bootstrap-star-rating/css/star-rating.css', media='all', rel='stylesheet', type='text/css')
 
-    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js')
-    //- провірка чи робе jq
     //- script(src='/testJQ.js') 
     //HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
     | <!--[if lt IE 9]>
@@ -29,15 +27,36 @@ html
   nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
     .container
       ul.nav.nav-pills
-        li: a(href='/') login
+        li: a#NoPaddandMarg(href='/')
+              img.logo(src="/img/logo_ico.png", alt="Logo")         
+        li: a(href='/login') login
         li: a(href='/signup') signup
         li: a(href='/home') home
         li: a(href='/video') video
-        li: a(href='/index') index
+        li: a(href='/') index
         li: a(href='/stars') stars
+        if userIn == true
+          li.dropdown.navbar-right
+              a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')                
+                | #{userName.full_name}
+                //- span.caret                       
+              ul.dropdown-menu
+                li
+                  a(href='/home') Home           
+                li
+                  a(href='#') Something else here            
+                li.divider(role='separator')             
+                li
+                  a(href='/signout') Sign out                  
+        if userIn == false
+          li.navbar-right: a(href='/login') Register / Sign In
+        
+
   .container
     block content
-    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
-    script(src='/js/bootstrap.min.js')
+    script(src='//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.js')
+    script(src='/libs/bootstrap-star-rating/js/star-rating.js', type='text/javascript')
+    script(src='/libs/jquery/dist/jquery.min.js', type='text/javascript')
+    script(src='/js/bootstrap.js')
     script(src='/js/main.js')
     block otherScripts

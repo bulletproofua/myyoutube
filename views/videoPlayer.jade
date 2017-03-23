@@ -3,73 +3,47 @@ extends layout
 block content
     div.container
         div.row
-            div.videoPlayer.col-md-10.col-md-offset-1
-                p#title-name #{data[0].name}
+            div.videoPlayer.col-md-10.col-md-offset-1                
                 video(controls="")
                     source(src='#{data[0].path}', type='video/mp4')
-                    |   Your browser does not support HTML5 video.                    
-                script(type='text/javascript').
-                    $(function() {
-                        $(".RatingBar").barrating({
-                        theme: 'css-stars'     
-                        });
-                        $("#"+"#{data[0].id}").barrating('set', 1 ); //'#{AVGrating}'
-                        $("#"+"#{data[0].id}").barrating('readonly', true);
-                    });
-                p Додано : #{data[0].added_date }
-                p.userName Загрузив : #{data[0].full_name}
-                .br-wrapper.br-theme-css-stars                   
-                    select.RatingBar(id="#{data[0].id}")
-                        option(value='')
-                        option(value='1') 1
-                        option(value='2') 2
-                        option(value='3') 3  
-                        option(value='4') 4
-                        option(value='5') 5
-                    //- div.br-widget
-                p Рейтинг : #{AVGrating}  
-                p Коментів : #{commentCount}
-                p description: #{data[0].description}
-            div.col-md-8.col-md-offset-2 
-                each thing, i in data               
-                    div.commentBlock
-                        ul  
-                            li #{data[i].ufull_name} 
-                                span #{data[i].RADD}
-                                script(type='text/javascript').
-                                    $(function() {
-                                        $(".RatingBar").barrating({
-                                        theme: 'css-stars'     
-                                        });
-                                        $("#"+"#{data[i].rating}").barrating('set', "#{data[i].rating}");
-                                        $("#qwer").barrating('readonly', true);                                    
-                                    });
-                                .br-wrapper.br-theme-css-stars                   
-                                    select.RatingBar(id="#{data[i].rating}")
-                                        option(value='1') 1
-                                        option(value='2') 2
-                                        option(value='3') 3  
-                                        option(value='4') 4
-                                        option(value='5') 5
-                            li Оцінка : #{data[i].rating}
-                            li Текст: #{data[i].comment}
+                    |   Your browser does not support HTML5 video. 
+                .panel.panel-default
+                    .panel-heading.text-center
+                        p#titleVideoP #{data[0].name}
+                    .panel-body                       
+                            .col-md-6.col-sm-6.text-center
+                                input(id='#{data[0].path}', class="rating rating-loading", value='#{AVGrating}', data-min="0", data-max="5", data-step="0.01", data-size="xs", readonly = true, showClear = false, hoverChangeCaption = false, hoverEnabled = false )
+                            .col-md-6.col-sm-6.text-center
+                                p.comment  Comments : #{commentCount}
+                        if data[0].description != undefined
+                            p.description  #{data[0].description}
 
-            div.col-md-8.col-md-offset-2
+            div.col-md-8.col-md-offset-2 
+                each thing, i in data  
+                    if data[i].ufull_name != null
+                        .panel.panel-primary
+                            .panel-heading                                
+                                h3.panel-title #{data[i].ufull_name}                                
+                                    span.pull-right #{data[i].RADD}
+                            .panel-body
+                                input(id='#{data[i].id}', class="rating rating-loading",value='#{data[i].rating}', data-min="0", data-max="5", data-step="0.1", data-size="xs", readonly = true, showClear = false, hoverChangeCaption = false, hoverEnabled = false )                                                        
+                                p.comment #{data[i].comment}
+            
+            div.col-md-8.col-md-offset-2 
                 div.addComment
                     form(action='/videocomment', method='POST')
-                        .br-wrapper.br-theme-css-stars                   
-                            select(name = "RatingStars").RatingBar(id="#{data[0].id}")
-                                option(value='')
-                                option(value='1') 1
-                                option(value='2') 2
-                                option(value='3') 3  
-                                option(value='4') 4
-                                option(value='5') 5
-                        textarea(class="form-control", placeholder ="Відгук", name ="comment")
-                        button(class='btn btn-primary btn-block', type='submit') Відправити
+                        if userIn == true
+                            input(id='userLog', class="rating rating-loading", name = "RatingStars", value='0', data-min="0", data-max="5", data-step="0.1", data-size="xs", showClear = false, hoverChangeCaption = false, hoverEnabled = false )
+                            textarea(class="form-control", placeholder ="Your comment", name ="comment")
+                            button(class='btn btn-primary btn-block', type='submit') Відправити
+                        if userIn == false
+                            input(id='userLog', class="rating rating-loading", name = "RatingStars", value='0', data-min="0", data-max="5", data-step="0.1", data-size="xs", readonly = true, showClear = false, hoverChangeCaption = false, hoverEnabled = false )
+                            textarea(class="form-control", name ="comment", disabled)    
+                            button(class='btn btn-primary btn-block', type='submit', disabled) Only authorized users can comment
+            
 
 
 
 block otherScripts
     script(src='/libs/jquery-bar-rating/dist/jquery.barrating.min.js')
-    //- script(src='/libs/jquery-bar-rating/dist/startRatingConfig.js') 
+    script(src='/js/examples.js')

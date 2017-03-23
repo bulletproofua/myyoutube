@@ -17,14 +17,14 @@ function JSUploader() {
 
     this.uploadFile =  function(index) {
         var file = baseClass.allFiles[index];
-        var a = document.getElementById("inputName").value;	
-        var b = document.getElementById("descriptionText").value;
+        // var a = document.getElementById("inputName").value;	
+        // var b = document.getElementById("descriptionText").value;
 
         if(file.valid) {
             var data = new FormData();
             data.append('uploadFile', file.file);
-            data.append('inputName', a );
-            data.append('descriptionText', b );
+            // data.append('inputName', a );
+            // data.append('descriptionText', b );
             // data.get('descriptionText', "asasas" );
             // data.append('description', document.getElementById("inputName"));
             

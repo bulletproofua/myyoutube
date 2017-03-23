@@ -1,25 +1,23 @@
 extends layout
 
 block content
+    .col-md-12
 
-    .stars.stars-example-fontawesome-o
-        select#example-fontawesome-o(name='rating', data-current-rating='4.6', autocomplete='off')
-            option(value='')    
-            option(value='1') 1    
-            option(value='2') 2  
-            option(value='3') 3   
-            option(value='4') 4     
-            option(value='5') 5   
-        span.title.current-rating
-            | Rating: 
-            span.value  
-        span.title.your-rating.hidden
-            | Your rating: 
-            span.value
-            | &nbsp;   
-            a.clear-rating(href='#')
+            
+        input(id="input-id",  class="rating")
+
+
+        input#input-2.rating.rating-loading(name='input-2', data-min='0', data-max='5', data-step='0.01')
+
+        input(id="input1", class="rating rating-loading", value="1.6", data-min="0", data-max="5", data-step="0.1", data-size="xs", readonly = true, showClear = false, hoverChangeCaption = false, hoverEnabled = false )
+        input(id="input1", class="rating rating-loading", value="3", data-min="0", data-max="5", data-step="0.1", data-size="xs",  showClear = false, hoverChangeCaption = false, hoverEnabled = false )
+        input(id="input" class="rating rating-loading" data-min="0" data-max="5" data-step="0.01")
+        
 
 
 block otherScripts
-    script(src='/libs/jquery-bar-rating/dist/jquery.barrating.min.js')
-    script(src='/js/examples.js')
+        script(type='text/javascript').
+            $('#input1').on('rating.change', function(event, 5, caption) {
+                console.log(value);
+                console.log(caption);
+            });

@@ -16,7 +16,7 @@ exports.videoScreen = function(videoName, videoLink ){
 	var proc = new ffmpeg(videoLink)
 	.takeScreenshots({
 		count: 1,
-		size: '320x240',
+		size: '854x480', // 320x240
 		filename: videoNameForScreen,
 		timestamps: ['00:00:10.123']
 		}, screenPath, function(err) {

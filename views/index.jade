@@ -2,34 +2,30 @@ extends layout
 
 block content
     div.container
+        div.row   
+            div.col-md-12             
+                .btn-group.pull-right
+                    button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                        | Sort by
+                        span.caret 
+                    ul.dropdown-menu
+                        li
+                            a(href='#') Popularity   
+                        li
+                            a(href='#') Date                     
+
         div.row
-            div.col-md-12
+            div.col-md-12.col-sm-12
                 each thing in data
-                    div.col-md-3.videoHome
-                        script(type='text/javascript').
-                            $(function() {
-                                $(".RatingBar").barrating({
-                                theme: 'css-stars'     
-                                });
-                                $("#"+"#{thing.id}").barrating('set', "#{thing.AVGRATING}");  
-                                $("#"+"#{thing.id}").barrating('readonly', true);                              
-                            });
-                        a(href="/video?id=#{thing.id}") 
-                            p.size #{thing.name}                     						
+                    div.col-md-3.col-sm-6.col-xs-12.videoHome
+                        a(href="/video?id=#{thing.id}")                                             						
                             img.videoLink(src="#{thing.screenshot_path}", alt="screenshot")
+                            p.size #{thing.name}    
                         p.size #{thing.added_date}
-                        p #{thing.full_name}
-                        .Stars.br-wrapper.br-theme-css-stars                      
-                            select.RatingBar(id="#{thing.id}")
-                                option(value='1') 1
-                                option(value='2') 2
-                                option(value='3') 3  
-                                option(value='4') 4
-                                option(value='5') 5
-                        p.currentRating Rating : #{thing.AVGRATING}
-                        
-                        
+                        p.size Download: #{thing.full_name}
+                        p.size Comments: #{thing.commentsCount}
+                        input(id='#{thing.id}', class="rating rating-loading", value='#{thing.AVGRATING}', data-min="0", data-max="5", data-step="0.1", data-size="xs2", readonly = true, showClear = false, hoverChangeCaption = false, hoverEnabled = false )
 
 block otherScripts
-    script(src='/libs/jquery-bar-rating/dist/jquery.barrating.min.js')
+    //- script(src='/libs/jquery-bar-rating/dist/jquery.barrating.min.js')
     //- script(src='/libs/jquery-bar-rating/dist/startRatingConfig.js') 

@@ -4,12 +4,22 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-image: url('/img/bg.png');
 }
 a {
     color: black;
 }
 a p{
     color: black;
+}
+
+#NoPaddandMarg {
+    margin: 0px;
+    padding: 0px;
+}
+.logo {
+    height: 40px;
+    width: 40px;
 }
 .form-signin{
     max-width: 330px;
@@ -81,11 +91,14 @@ a p{
     border-radius: 50%;
 }
 .new-account{
+    font-size: 1.5em;
     display: block;
     margin-top: 10px;
 }
-h1.error-message{
-    color: red;
+h3.error-message{
+    padding: 0px;
+    margin: 0px;
+    color: #b70e05;
 }
 ul.user-details{
     list-style: none;
@@ -103,13 +116,13 @@ ul.user-details{
 
 /*------- HOME---------------------*/
 
-.videoHome{
+.col-md-3{
+   margin: 4px;
+}
+.videoHome {
     background-color: #f7f7f7;
     float: left;
-    height: 300px;
     width: auto;
-    margin: 5px 5px;
-    padding: 15px;
     border: 1px solid #ccc;
 }
 
@@ -118,17 +131,9 @@ ul.user-details{
     margin: 0px;
 }
 
-
-/*.videoHome a {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 12px;
-}*/
 .videoHome a p{
     margin:0px;
     padding: 0px;
-
 }
 .videoHome a p{
     font-size: 1.2em;
@@ -136,14 +141,13 @@ ul.user-details{
     font-family: 'Tinos', serif;
 }
 .size {
+    padding: 0 3%;
     white-space: nowrap; /* Отменяем перенос текста */
     overflow: hidden; /* Обрезаем содержимое */
     padding: 2px; /* Поля */
     text-overflow: ellipsis; /* Многоточие */
 }
-
 .videoHome img {
-    /*text-align:center;*/
     height: auto;
     width: 100%;
 }
@@ -152,9 +156,7 @@ ul.user-details{
     text-align: center;
     color: dimgrey;
 }
-/*.Stars div {    
-    text-align: center;
-}*/
+
 
 /*----------VIDEO_PLAYER-----------*/
     a:link { text-decoration: none; }
@@ -168,24 +170,29 @@ ul.user-details{
     a p:hover { text-decoration: none; } 
 
 
-#title-name {
-    text-align: center;
-    font-size: 1.5em;
+#titleVideoP {
+    font-size: 1.3em;
+    margin-bottom: 0px;
+    /*padding: 0 5%;*/
 }
+
 
 .videoPlayer {
     margin-bottom: 30px;
-    margin: 20px 0 0 0 ;
+    margin: 30px 0 0 0 ;
 }
 
 .videoPlayer video {
     padding: 0;
-   
-    /*margin: 0px auto;*/
-    width: 900px;
     height: auto;
-    /*height: 540px;*/
+    width: 100%;
 }
+.description{
+    font-size: 1.5em;
+    padding: 0 10%;
+    text-align: center;
+}
+
 
 .commentBlock {
     border: 1px solid #cccccc;
@@ -215,7 +222,19 @@ ul.user-details{
     float: right;
 }
 
+
+.comment {
+    font-size: 1.3em;
+    padding-left: 5px;
+    margin-bottom: 0px;
+}
+
+
 .addComment{
     margin-top: 10px;
+    
+}
+.addComment {
+    cursor: default;
 }
 
