@@ -35,13 +35,10 @@ exports.PostDataVideos = function(post, filename, uploadFile){
 }
 
 exports.GetVideoByUser = function(user_id, callback){
-    connection.query('SELECT videos.*, COUNT(raitings.id) as commentsCount, AVG(raitings.rating) as "AVGRATING" FROM videos Left JOIN raitings ON videos.id = raitings.video_id WHERE videos.user_id =? GROUP BY videos.id ORDER BY AVGRATING DESC', user_id, function(err, rows, fields) {
+    connection.query('SELECT videos.*, COUNT(raitings.id) as commentsCount, AVG(raitings.rating) as "AVGRATING" FROM videos Left JOIN raitings ON videos.id = raitings.video_id WHERE videos.user_id =? GROUP BY videos.id ORDER BY AVGRATING DESC LIMIT 4 OFFSET 0', user_id, function(err, rows, fields) {
     if (err){
             callback(err,null);
         } else {
-             console.log("----------------------");
-             console.log(rows);
-             console.log("----------------------");
              callback(null, rows);
         }              
     });

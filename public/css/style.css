@@ -18,13 +18,40 @@ a p{
     text-decoration: none;
 }
 
+#NameLogo {
+    margin: 0px;
+    padding: 15px 0 0 0 ;
+    color: black;
+    font-family: 'Baloo Bhaina', cursive;
+    font-size: 1.7em;
+}
+#NameLogo :hover {
+    text-decoration: none;
+}
 #NoPaddandMarg {
     margin: 0px;
-    padding: 0px;
+    padding: 5px 0 0 0 ;
 }
+
+#NameUser {
+    margin: 0px;
+    padding: 15px 0 0 0 ;
+    color: black;
+    font-family: 'Baloo Bhaina', cursive;
+    font-size: 1.7em;
+}
+
+#RegSign{
+    margin: 0px;
+    padding: 18px 0 0 0 ;
+    color: black;
+    font-family: 'Baloo Bhaina', cursive;
+    font-size: 1.3em; 
+}
+
 .logo {
-    height: 40px;
-    width: 40px;
+    height: 43px;
+    width: 43px;
 }
 
 .textCenter {
@@ -136,7 +163,9 @@ ul.user-details{
     border: 1px solid #ccc;
     box-shadow:  1px 3px 6px rgba(0,0,0,0.2);
 }
-
+.videoHome a :hover {
+    text-decoration: none;
+}
 .videoHome p {
     padding: 5px 0;
     margin: 0px;
@@ -158,6 +187,10 @@ ul.user-details{
     overflow: hidden; 
     padding: 2px; 
     text-overflow: ellipsis;
+}
+
+.bigsize {
+    font-size: 1.3em;
 }
 
 
@@ -240,7 +273,7 @@ ul.user-details{
 }
 .sortForm {
     margin-top:10px;
-    padding-right: 6%;
+    padding-right: 5px;
 }
 
 .videoPlayer {
@@ -304,3 +337,32 @@ ul.user-details{
     cursor: default;
 }
 
+.homeVideoU {
+    margin-top: 15px;
+}
+
+.homeVideoU p {
+    margin: 0px;
+    font-size: 1em;
+}
+
+.addComment form textarea {
+    font-size: 1.3em;
+}
+
+#UploadsFile{
+    padding: 0px;
+    margin: 0px;
+    font-size: 1.6em;
+}
+.panel-heading{
+    padding: 0px 15px;
+}
+@media (max-width: 768px) {
+    .sortForm {
+        margin-top:10px;
+        padding-right: 0px;
+    }
+
+
+}

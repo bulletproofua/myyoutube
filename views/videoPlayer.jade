@@ -3,7 +3,7 @@ extends layout
 block content
     div.container
         div.row
-            div.videoPlayer.col-md-10.col-md-offset-1                
+            div.videoPlayer.col-md-10.col-md-offset-1.col-sm-12                
                 video(controls="")
                     source(src='#{data[0].path}', type='video/mp4')
                     |   Your browser does not support HTML5 video. 
@@ -18,7 +18,7 @@ block content
                         if data[0].description != undefined
                             p.description  #{data[0].description}
 
-            div.col-md-8.col-md-offset-2 
+            div.col-md-8.col-md-offset-2.col-sm-12
                 each thing, i in data  
                     if data[i].ufull_name != null
                         .panel.panel-primary
@@ -38,7 +38,7 @@ block content
                             button(class='btn btn-primary btn-block', type='submit') Відправити
                         if userIn == false
                             input(id='userLog', class="rating rating-loading", name = "RatingStars", value='0', data-min="0", data-max="5", data-step="1", data-size="xs", readonly = true  )
-                            textarea(class="form-control", name ="comment", disabled)    
+                            textarea(class="form-control ", name ="comment", disabled)    
                             button(class='btn btn-primary btn-block', type='submit', disabled) Only authorized users can comment
             
 

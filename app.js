@@ -76,6 +76,25 @@ if (app.get('env') === 'development') {
     });
 }
 
+console.log("_________________");
+var Chars= '0123456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ'
+    var data = "Вася";
+
+        var VALID_REGEX = new RegExp('/^[A-Za-z0-9]+$/','g');
+        console.log(data.match(VALID_REGEX));
+        
+        if(data.match(VALID_REGEX)){
+            console.log("я хз_________________");
+           
+        }
+
+
+
+// var str = "0 1 2 3456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ";
+
+// console.log( /1 2 3/i.test(str) ); // true
+
+
     server = app.listen(3000, function(){
     console.log('listening port');
     });

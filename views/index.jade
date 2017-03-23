@@ -29,8 +29,8 @@ block content
                                 .text-center
                                     input(id='#{thing.id}', class="rating rating-loading pull-center", value='#{thing.AVGRATING}', data-min="0", data-max="5", data-step="0.1", data-size="xs2", readonly = true )       
                                 .bottomVideoHome
-                                    p.size Download: #{thing.full_name}
-                                    p Comments: #{thing.commentsCount}
+                                    p.size uploaded by: #{thing.full_name}
+                                    p comments: #{thing.commentsCount}
                         
 
 block otherScripts

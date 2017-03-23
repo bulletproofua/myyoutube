@@ -207,6 +207,8 @@ function JSUploader() {
         //create progress
         var progressColumn = $('<td>');
         progressColumn.attr('style', 'vertical-align: middle;');
+        progressColumn.attr('style', 'width: 30%;');
+        progressColumn.attr('style', 'padding-right: 10px;');
         if(file.valid) {
             var progress = $('<div>');
 

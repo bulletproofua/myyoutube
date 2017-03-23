@@ -15,9 +15,13 @@ module.exports = function(passport){
             connection.query("select * from users where login = '"+login+"'",function(err,rows){
                 console.log(rows);
                     if (err){
-                        console.log('Error in SignUp: ');
+                            console.log('Error in SignUp: ');
                         return done(err);
                     }
+                
+                    // if(){
+
+                    // }
                     // already exists
                     if (rows.length) {
                         console.log('User already exists with username: ');
