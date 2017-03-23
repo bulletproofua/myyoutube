@@ -32,13 +32,8 @@ exports.PostDataVideos = function(post, filename, uploadFile){
     else
         console.log('!insert. Video is not afasdfsdf');
     });
-//  connection.end();
 }
 
-// зали базу норм заповню
-// SELECT * , AVG(raitings.rating) as 'AVGRATING' FROM videos JOIN raitings ON videos.id = raitings.video_id WHERE videos.user_id =1 LIMIT 8
-
-// SELECT *, COUNT(raitings.id) as commentsCount, AVG(raitings.rating) as "AVGRATING" FROM videos Left JOIN raitings ON videos.id = raitings.video_id WHERE videos.user_id =8 GROUP BY videos.id ORDER BY AVGRATING DESC
 exports.GetVideoByUser = function(user_id, callback){
     connection.query('SELECT videos.*, COUNT(raitings.id) as commentsCount, AVG(raitings.rating) as "AVGRATING" FROM videos Left JOIN raitings ON videos.id = raitings.video_id WHERE videos.user_id =? GROUP BY videos.id ORDER BY AVGRATING DESC', user_id, function(err, rows, fields) {
     if (err){
@@ -48,18 +43,22 @@ exports.GetVideoByUser = function(user_id, callback){
              console.log(rows);
              console.log("----------------------");
              callback(null, rows);
-
         }              
     });
 };
 
-// по даті додавання
-// SELECT Videos.*, COUNT(raitings.id) as commentsCount, AVG(raitings.rating) as 'AVGRATING' 
-// FROM VIDEOS 
-// JOIN (USERS, raitings) ON (videos.user_id = users.id AND videos.id = raitings.video_id) GROUP BY videos.id ORDER BY videos.added_date DESC LIMIT 8 OFFSET 0
-
-exports.GetVideo = function(callback){
+exports.GetVideoByPopularity = function(callback){
     connection.query('SELECT Videos.*, users.full_name, COUNT(raitings.id) as commentsCount, AVG(raitings.rating) as "AVGRATING" FROM VIDEOS JOIN (USERS, raitings) ON (videos.user_id = users.id AND videos.id = raitings.video_id) GROUP BY videos.id ORDER BY AVGRATING DESC LIMIT 8 OFFSET 0', function(err, rows, fields) {
+    if (err){
+            callback(err,null);
+        } else {
+             callback(null, rows);
+        }              
+    });
+};
+
+exports.GetVideoByDate = function(callback){
+    connection.query('SELECT Videos.*, users.full_name, COUNT(raitings.id) as commentsCount, AVG(raitings.rating) as "AVGRATING" FROM VIDEOS JOIN (USERS, raitings) ON (videos.user_id = users.id AND videos.id = raitings.video_id) GROUP BY videos.id ORDER BY videos.added_date DESC LIMIT 8 OFFSET 0', function(err, rows, fields) {
     if (err){
             callback(err,null);
         } else {
@@ -78,8 +77,6 @@ exports.GetVideoById = function( id, callback ){
     });
 };
 
-
-
 exports.GetCommentByVideoId = function( video_id, callback ){
     connection.query('SELECT users.full_name, raitings.* FROM videos JOIN users ON videos.user_id = users.id JOIN raitings ON videos.id = raitings.video_id WHERE raitings.video_id = ? ORDER BY raitings.added DESC', video_id , function(err, rows, fields) {
     if (err){
@@ -89,25 +86,6 @@ exports.GetCommentByVideoId = function( video_id, callback ){
         }              
     });
 };
-
-
-
-// SELECT videos.*, raitings.* FROM VIDEOS JOIN USERS ON videos.user_id = users.id JOIN raitings ON videos.id = raitings.video_id where videos.id = ? GROUP BY raitings.added DESC
-
-
-// exports.GetVideoUserCommentData = function( video_id, callback ){
-//     connection.query('SELECT videos.*, users.full_name, raitings.* FROM VIDEOS JOIN USERS ON videos.user_id = users.id JOIN raitings ON videos.id = raitings.video_id where videos.id = ? GROUP BY raitings.added DESC', video_id , function(err, rows, fields) {
-//     if (err){
-//             callback(err,null);
-//         } else {
-
-//              callback(null, rows);
-//         }              
-//     });
-// };
-
-// SELECT T2.full_name, T1.* FROM (SELECT  videos.*, users.full_name as ufull_name, raitings.comment,  raitings.added ,videos.user_id as VUid FROM raitings JOIN videos ON videos.id = raitings.video_id JOIN USERS ON raitings.user_id = users.id where videos.id = 8) T1 JOIN users as T2 ON T1.VUid = T2.id 
-
 
 
 exports.GetVideoUserCommentData = function( video_id, callback ){
@@ -121,24 +99,10 @@ exports.GetVideoUserCommentData = function( video_id, callback ){
     });
 };
 
-
-// exports.GetVideoUserCommentData = function( video_id, callback ){
-//     connection.query('SELECT videos.*, raitings.* FROM VIDEOS JOIN USERS ON videos.user_id = users.id JOIN raitings ON videos.id = raitings.video_id where videos.id = ? GROUP BY raitings.added DESC', video_id , function(err, rows, fields) {
-//     if (err){
-//             callback(err,null);
-//         } else {
-//              callback(null, rows);
-//         }              
-//     });
-// };
-//  var insertQuery = "INSERT INTO users ( login, full_name, pass ) values ('" + login +"','"+ user.full_name +"','"+ pass +"')";
-// SELECT EXISTS ( SELECT* FROM raitings WHERE video_id =8 AND user_id =2);
-
 exports.SetCommet = function(video_id, user_id, comment, rating, callback){   
     connection.query('SELECT EXISTS (SELECT * FROM raitings WHERE video_id ='+video_id+' AND user_id ='+user_id+') as "Status"', function(err, rows, fields) {
     if (err) callback(err,null);
         if (!err){           
-                // console.log(rows[0].Status);
                 if(rows[0].Status == 1){                
                     if(comment == " " || comment == null) comment = "No comments. Only stars";
                     var insertQuery = "UPDATE raitings SET video_id = '"+ video_id +"', user_id = '"+ user_id +"', comment = '"+comment+"', rating ='"+ rating +"' WHERE video_id ='"+video_id+"' AND user_id ='"+user_id+"'";
@@ -166,10 +130,6 @@ exports.SetCommet = function(video_id, user_id, comment, rating, callback){
                 }
         }               
     });
-
-
-
-
 }
 
 exports.cnnectionEnd = function(){

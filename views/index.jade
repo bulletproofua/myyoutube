@@ -3,16 +3,16 @@ extends layout
 block content
     div.container
         div.row   
-            div.col-md-12             
-                .btn-group.pull-right
+            div.col-md-12.col-sm-12            
+                .btn-group.pull-right.sortForm
                     button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
                         | Sort by
                         span.caret 
                     ul.dropdown-menu
                         li
-                            a(href='#') Popularity   
+                            a(href='/') Popularity   
                         li
-                            a(href='#') Date                     
+                            a(href='/sortByDate') Date                     
 
         div.row
             div.col-md-12.col-sm-12

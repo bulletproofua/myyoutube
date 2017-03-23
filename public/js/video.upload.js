@@ -252,8 +252,8 @@ function JSUploader() {
         // row.append(preview);
         row.append(fileInfo);
         // row.append(messageColumn); 
-        row.append(nameColumn); 
-        row.append(description);
+        // row.append(nameColumn); 
+        // row.append(description);
         row.append(progressColumn);
         row.append(button1);
         row.append(button2);

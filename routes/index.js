@@ -4,22 +4,18 @@ var express = require('express'),
 	mysql = require('mysql'),
 	multiparty = require('multiparty'),
 	bodyParser = require('body-parser');
-	var ffmpeg = require('fluent-ffmpeg');
-	var ffmpeg = require("../controllers/screenshot");
-	var db = require('../models/query');
-	var url = require('url');
-	var http = require('http');
-	var DF = require('../controllers/dateFormat'); 
+var ffmpeg = require('fluent-ffmpeg');
+var ffmpeg = require("../controllers/screenshot");
+var db = require('../models/query');
+var url = require('url');
+var http = require('http');
+var DF = require('../controllers/dateFormat'); 
 
 	var app = express();
 	
 var isAuthenticated = function (req, res, next) {
-	// if user is authenticated in the session, call the next() to call the next request handler 
-	// Passport adds this method to request object. A middleware is allowed to add properties to
-	// request and response objects
 	if (req.isAuthenticated())
 		return next();
-	// if the user is not authenticated then redirect him to the login page
 	res.redirect('/');
 }
 
@@ -57,6 +53,7 @@ module.exports = function(passport){
 			}
 		});	
 	});
+
 
 	router.get('/signout', function(req, res) {
 		req.logout();
@@ -104,10 +101,8 @@ module.exports = function(passport){
 	    form.on('part', function(part) {
 	        uploadFile.size = part.byteCount;
 	        uploadFile.type = part.headers['content-type'];
-	        // filename = part.filename.slice(0, -4);
 			filename = part.filename.slice(0, -4);
 			filenameSQL = part.filename;
-			console.log("fileName :" + filename);
 			screenshot_pathSQL = './files/Screenshot/' + filename  + ".png";
 			uploadFile.path = 'public/files/' + filenameSQL;
 			uploadFile.pathSQL = './files/' + filenameSQL;
@@ -115,11 +110,9 @@ module.exports = function(passport){
 	        if(uploadFile.size > maxSize) {
 	            errors.push('File size is ' + uploadFile.size / 1024 / 1024 + '. Limit is' + (maxSize / 1024 / 1024) + 'MB.');
 	        }
-
 	        if(supportMimeTypes.indexOf(uploadFile.type) == -1) {
 	            errors.push('Unsupported mimetype ' + uploadFile.type);
 	        }
-
 	        if(errors.length == 0) {
 	            var out = fs.createWriteStream(uploadFile.path);
 	            part.pipe(out);
@@ -133,8 +126,6 @@ module.exports = function(passport){
 	    });
 	    form.parse(req);
 	});
-
-
 
 	router.get('/video', function(req, res) {
 		req.query.id; 
@@ -153,17 +144,10 @@ module.exports = function(passport){
 					for(var j = 0; j < data.length; j++){
 						data[j].RADD = DF.dataFormat(data[j].RADD);
 					}
-					
-					// console.log("---------------------");
-					// console.log("data" + data);
-					// console.log("data" + data[0].description);
-					// console.log("---------------------");
-					// console.log(typeof(" "+ data[0].added_date));
 					res.render('videoPlayer', { data, commentCount: data.length, AVGrating : RatingCount, userName: req.user, userIn: req.isAuthenticated() });
 				}
 			})
 		});
-
 
 	router.post('/videocomment', isAuthenticated, function(req, res, next) {
 		var videoID = url.parse(req.headers.referer, true).query;
@@ -176,11 +160,11 @@ module.exports = function(passport){
 		res.redirect(req.headers.referer); 			
 	});
 
+	//VideoByPopularity - default
 	router.get('/', function(req, res) {
-		db.GetVideo(function(err, data) {
+		db.GetVideoByPopularity(function(err, data) {
 			if(err) console.log("ERROR : "+ err);
 			else  {
-				// console.log("result : "+ data);
 					for(var j = 0; j < data.length; j++){
 						data[j].added_date = DF.dataFormat(data[j].added_date);
 					}
@@ -189,8 +173,16 @@ module.exports = function(passport){
 		});	
 	});
 
-	router.get('/stars', function(req, res) {
-			res.render('stars');
+	router.get('/sortByDate', function(req, res) {
+		db.GetVideoByDate(function(err, data) {
+			if(err) console.log("ERROR : "+ err);
+			else  {
+					for(var j = 0; j < data.length; j++){
+						data[j].added_date = DF.dataFormat(data[j].added_date);
+					}
+				res.render('index', { data, userName: req.user, userIn: req.isAuthenticated() });
+			}
+		});	
 	});
 
 	return router;

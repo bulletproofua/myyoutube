@@ -12,7 +12,7 @@ block content
                         p#titleVideoP #{data[0].name}
                     .panel-body                       
                             .col-md-6.col-sm-6.text-center
-                                input(id='#{data[0].path}', class="rating rating-loading", value='#{AVGrating}', data-min="0", data-max="5", data-step="0.01", data-size="xs", readonly = true, showClear = false, hoverChangeCaption = false, hoverEnabled = false )
+                                input(id='#{data[0].path}', class="rating rating-loading", value='#{AVGrating}', data-min="0", data-max="5", data-step="0.01", data-size="xs", readonly = true )
                             .col-md-6.col-sm-6.text-center
                                 p.comment  Comments : #{commentCount}
                         if data[0].description != undefined
@@ -26,18 +26,18 @@ block content
                                 h3.panel-title #{data[i].ufull_name}                                
                                     span.pull-right #{data[i].RADD}
                             .panel-body
-                                input(id='#{data[i].id}', class="rating rating-loading",value='#{data[i].rating}', data-min="0", data-max="5", data-step="0.1", data-size="xs", readonly = true, showClear = false, hoverChangeCaption = false, hoverEnabled = false )                                                        
+                                input(id='#{data[i].id}', class="rating rating-loading",value='#{data[i].rating}', data-min="0", data-max="5", data-step="0.1", data-size="xs", readonly = true )                                                        
                                 p.comment #{data[i].comment}
             
             div.col-md-8.col-md-offset-2 
                 div.addComment
                     form(action='/videocomment', method='POST')
                         if userIn == true
-                            input(id='userLog', class="rating rating-loading", name = "RatingStars", value='0', data-min="0", data-max="5", data-step="0.1", data-size="xs", showClear = false, hoverChangeCaption = false, hoverEnabled = false )
+                            input(id='userLog', class="rating rating-loading", name = "RatingStars", value='0', data-min="0", data-max="5", data-step="1", data-size="xs")
                             textarea(class="form-control", placeholder ="Your comment", name ="comment")
                             button(class='btn btn-primary btn-block', type='submit') Відправити
                         if userIn == false
-                            input(id='userLog', class="rating rating-loading", name = "RatingStars", value='0', data-min="0", data-max="5", data-step="0.1", data-size="xs", readonly = true, showClear = false, hoverChangeCaption = false, hoverEnabled = false )
+                            input(id='userLog', class="rating rating-loading", name = "RatingStars", value='0', data-min="0", data-max="5", data-step="1", data-size="xs", readonly = true  )
                             textarea(class="form-control", name ="comment", disabled)    
                             button(class='btn btn-primary btn-block', type='submit', disabled) Only authorized users can comment
             
