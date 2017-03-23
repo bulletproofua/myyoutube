@@ -1,19 +1,19 @@
 var LocalStrategy   = require('passport-local').Strategy;
 var User = require('../../models/user');
-var bCrypt = require('bcrypt-nodejs');
+var crypto = require('crypto');
+var md5 = require('../md5');
+
 
 
 module.exports = function(passport){
 	passport.use('signup', new LocalStrategy({
-        // прописати якісь срані строки
+            // прописати якісь срані строки
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
         function(req, login, pass, done) {
             findOrCreateUser = function(){
-                // find a user in Mongo with provided username
             connection.query("select * from users where login = '"+login+"'",function(err,rows){
                 console.log(rows);
-                console.log("above row object");
                     if (err){
                         console.log('Error in SignUp: ');
                         return done(err);
@@ -31,7 +31,9 @@ module.exports = function(passport){
                             pass: pass
                         });
                         console.log(user);
-
+                        //md5
+                        pass = md5.hash(pass);
+                        console.log(md5.hash(pass));
                         // save the user
                         var insertQuery = "INSERT INTO users ( login, full_name, pass ) values ('" + login +"','"+ user.full_name +"','"+ pass +"')";
                             console.log(insertQuery);
@@ -48,10 +50,4 @@ module.exports = function(passport){
             process.nextTick(findOrCreateUser);
         })
     );
-
-    // Generates hash using bCrypt
-    var createHash = function(password){
-        return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
-    }
-
 }

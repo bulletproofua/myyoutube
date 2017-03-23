@@ -43,8 +43,6 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
- // Using the flash middleware provided by connect-flash to store messages in session
- // and displaying in templates
 var flash = require('connect-flash');
 app.use(flash());
 
@@ -54,7 +52,7 @@ initPassport(passport);
 
 var ffmpeg = require('fluent-ffmpeg');
 var ffmpeg = require("./controllers/screenshot");
-//ffmpeg.videoScreen2();
+
 
 var routes = require('./routes/index')(passport);
 app.use('/', routes);
@@ -77,7 +75,6 @@ if (app.get('env') === 'development') {
         });
     });
 }
-
 
     server = app.listen(3000, function(){
     console.log('listening port');

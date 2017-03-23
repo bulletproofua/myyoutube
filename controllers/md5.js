@@ -1,6 +1,6 @@
 var crypto = require('crypto');
 
-var SaltLength = 9;
+var SaltLength = 3;
 
 function createHash(password) {
   var salt = generateSalt(SaltLength);
