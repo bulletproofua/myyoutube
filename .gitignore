@@ -1,5 +1,5 @@
 /node_modules/*
 /ffmpeg/*
-/files/*
+/ffmpeg86/*
 /public/files/*
 /.vscode/*

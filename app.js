@@ -88,14 +88,7 @@ var Chars= '0123456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ'
            
         }
 
-
-
-// var str = "0 1 2 3456789abcdefghijklmnopqurstuvwxyzABCDEFGHIJKLMNOPQURSTUVWXYZ";
-
-// console.log( /1 2 3/i.test(str) ); // true
-
-
-    server = app.listen(3000, function(){
+    server = app.listen(3000, function(){ // port
     console.log('listening port');
     });
     

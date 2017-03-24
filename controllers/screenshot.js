@@ -1,13 +1,8 @@
 var express = require('express'),
 	ffmpeg = require('fluent-ffmpeg');
 
-ffmpeg.setFfprobePath("G:\\MyGit\\myyoutube\\ffmpeg\\bin\\ffprobe.exe");
-ffmpeg.setFfmpegPath("G:\\MyGit\\myyoutube\\ffmpeg\\bin\\ffmpeg.exe");
-
-// var videoLink = "./files/Ахахаха [720].mp4";
-// var videoName = "Ахахаха[720].mp4"; // з БД
-
-
+ffmpeg.setFfprobePath("G:\\MyGit\\myyoutube\\ffmpeg\\bin\\ffprobe.exe"); //set your path
+ffmpeg.setFfmpegPath("G:\\MyGit\\myyoutube\\ffmpeg\\bin\\ffmpeg.exe"); //set your path
 
 exports.videoScreen = function(videoName, videoLink ){
 	console.log("Start: ");
